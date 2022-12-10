@@ -84,6 +84,7 @@ Run
 
 You need to specify input and output directories using the `-v` flag to `docker run`.
 
+You need to create a folder named "in" and a folder named "out" before testing the plugin locally to avoid access issue.
 
 .. code:: bash
 
@@ -92,6 +93,16 @@ You need to specify input and output directories using the `-v` flag to `docker 
         fnndsc/pl-ocr_tool ocr_tool                        \
         /incoming /outgoing
 
+Please change the "fnndsc" in the command to fit your image name
+
+Example:
+
+.. code:: bash
+
+    docker run --rm -u $(id -u)                             \
+        -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing      \
+        walterzhao511/pl-ocr_tool ocr_tool                        \
+        /incoming /outgoing
 
 Development
 -----------
@@ -101,12 +112,25 @@ Build the Docker container:
 .. code:: bash
 
     docker build -t local/pl-ocr_tool .
+    
+Example:
+
+.. code:: bash
+
+    docker build -t walterzhao511/pl-ocr_tool .
 
 Run unit tests:
 
 .. code:: bash
 
     docker run --rm local/pl-ocr_tool nosetests
+    
+Example:
+
+.. code:: bash
+
+    docker run -rm walterzhao511/pl-ocr_tool nosetests  
+
 
 Examples
 --------

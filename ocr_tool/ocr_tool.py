@@ -9,10 +9,12 @@
 #
 
 from chrisapp.base import ChrisApp
-import pytesseract
+# import pytesseract
 import os, re
 from langdetect import detect_langs
 import pycountry
+from paddleocr import PaddleOCR, draw_ocr
+from PIL import Image
 
 Gstr_title = r"""
                  _              _
@@ -57,6 +59,17 @@ where necessary.)
             docker run --rm -u $(id -u)                             \
                 -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing      \
                 fnndsc/pl-ocr_tool ocr_tool                        \
+                /incoming /outgoing
+
+
+
+
+        // Change the fnndsc into you docker account name
+
+
+        docker run --rm -u $(id -u)                             \
+                -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing      \
+                jinzhouwalter511/pl-ocr_tool ocr_tool                        \
                 /incoming /outgoing
 
     DESCRIPTION
@@ -116,7 +129,10 @@ class OcrTool(ChrisApp):
     # flag. Note also that all file paths are relative to the system specified
     # output directory.
     OUTPUT_META_DICT = {}
-
+    '''
+    def addtest(self, x, y):
+        return x + y
+    '''        
     def define_parameters(self):
         """
         Define the CLI arguments accepted by this plugin app.
@@ -124,7 +140,7 @@ class OcrTool(ChrisApp):
         """
         print("defining")
         help_str = "language to use for OCR detection (default is auto). Multiple languages can be provided (i.e. eng+spa for English and/or Spanish)"
-        self.add_argument("--lang", dest='lang', default='auto', action='store', type=str, help=help_str, optional=True)
+        self.add_argument("--lang", dest='lang', default='ch', action='store', type=str, help=help_str, optional=True)
 
     def run(self, options):
         """
@@ -138,8 +154,10 @@ class OcrTool(ChrisApp):
 
         def convert_lang_code(input):
             lang = pycountry.languages.get(alpha_2=input)
+            print("def convert lang code output is "+lang.alpha_3)
             return lang.alpha_3
 
+        # choose language
         def auto_detect_langs(contents):
             all_detected_langs = list(convert_lang_code(x.lang) for x in detect_langs(contents))
             if "eng" not in all_detected_langs:
@@ -152,24 +170,73 @@ class OcrTool(ChrisApp):
         outputdir = options.outputdir
         print("Converting images in '%s' to text in '%s'" % (inputdir, outputdir))
 
-        if options.lang == "auto":
-            print("Will auto-detect language for OCR")
+
+        if options.lang == "ch":
+            print("Will use English & Chinese as language for OCR")
         else:
             print("Will use %s as language for OCR" % options.lang)
+        
 
         for f in os.listdir(inputdir):
+            # read in
             img, txt = get_input_output_path(f)
             print("Converting '%s' to '%s'" % (img, txt))
-            if options.lang == "auto":
-                contents = pytesseract.image_to_string(img)
-                options.lang = "+".join(auto_detect_langs(contents))
+        # convert!!  image_to_string
+            #if options.lang == "auto":
+            '''
+            contents = pytesseract.image_to_string(img)
+            options.lang = "+".join(auto_detect_langs(contents))
+            
 
-            custom_config = r'-l %s --psm 6' % options.lang
-            contents = pytesseract.image_to_string(img, config=custom_config)
+            print("pytesseract: "+contents)
+            '''
 
+        
+            ocr = PaddleOCR(use_angle_cls=True, lang=options.lang)
+            
+            result = ocr.ocr(img, cls=True)
+            
+            for idx in range(len(result)):
+        
+                res = result[idx]
+                #for line in res:
+                #    print("2")
+                #    print(line)
+
+            result = result[0]
+            #image = Image.open(img).convert('RGB')
+            #boxes = [line[0] for line in result]
+            txts = [line[1][0] for line in result]
+            print(txts)
+            #scores = [line[1][1] for line in result]
+            #im_show = draw_ocr(image, boxes, txts, scores, font_path='./fonts/simfang.ttf')
+            #im_show = Image.fromarray(im_show)
+            #im_show.save('result.jpg')
+            i = 0
+            with open(txt, "w") as f:
+                for i in range(len(txts)):
+                    f.write("".join(txts[i]))
+                    f.write('\r\n')
+
+# add custom config
+            
+            #custom_config = r'-l %s --psm 6' % options.lang
+            #contents = pytesseract.image_to_string(img, config=custom_config)
+            #print("pytesseract+custome config: "+contents)
+
+            '''
+            ocr = PaddleOCR(use_angle_cls=True, lang="ch")
+            result = ocr.ocr(img, cls=True)
+            for idx in range(len(result)):
+                res = result[idx]
+                for line in res:
+                    print(line)
+            '''
+# write in
+            '''
             with open(txt, "w") as f:
                 f.write(contents)
-
+            '''
     def show_man_page(self):
         """
         Print the app's man page.

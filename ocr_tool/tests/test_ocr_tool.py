@@ -43,7 +43,20 @@ class OcrToolTests(TestCase):
         with open(os.path.join(outputdir, "test1.txt"), "r") as f:
             output = "".join(f.readlines())
 
-        with open(os.path.join(expected, "test1.txt"), "r") as f:
-            expected = "".join(f.readlines())
+        #with open(os.path.join(expected, "test1.txt"), "r") as f:
+        #    expected = "".join(f.readlines())
 
         self.assertEqual(output.strip(), expected.strip())
+    '''
+    def test_get_input_output_path():
+        pass
+    def test_convert_lang_code():
+        pass
+    def test_auto_detect_langs():
+        pass
+    
+    def test_addtest(self):
+        actual = self.app.addtest(1,2)
+        expected = 3
+        self.assertEqual(actual, expected)
+    '''
