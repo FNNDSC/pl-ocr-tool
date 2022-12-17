@@ -13,7 +13,7 @@ setup(
     author_email     = 'pep@redhat.com',
     url              = 'https://github.com/rh-impact/pl-ocr_tool/blob/main/README.adoc',
     packages         = ['ocr_tool'],
-    install_requires = ['chrisapp'],
+    install_requires = ['chrisapp','paddleocr','paddlepaddle','pillow'],
     test_suite       = 'nose.collector',
     tests_require    = ['nose'],
     license          = 'MIT',
