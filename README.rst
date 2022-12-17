@@ -17,7 +17,7 @@ pl-ocr_tool
 Abstract
 --------
 
-An application that can take images as input and identify and extract written text from them, supporting 80 Languages.
+An application that can take images as input and identify and extract written text from them, supporting 9 Languages(Chinese, English, French, German, Japanese, Korean, Spanish, Russian, Portuguese).
 Idea users of this tool includes doctors, healthcare professionals or anyone familiar with the ChRIS project.
 
 
@@ -79,49 +79,14 @@ Getting inline help is:
 
     docker run --rm fnndsc/pl-ocr_tool ocr_tool --man
 
-## 5 Support languages and abbreviations
+Support languages and abbreviations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| Language  | Abbreviation | | Language  | Abbreviation |
-| ---  | --- | --- | ---  | --- |
-|Chinese & English|ch| |Arabic|ar|
-|English|en| |Hindi|hi|
-|French|fr| |Uyghur|ug|
-|German|german| |Persian|fa|
-|Japan|japan| |Urdu|ur|
-|Korean|korean| | Serbian(latin) |rs_latin|
-|Chinese Traditional |chinese_cht| |Occitan |oc|
-| Italian |it| |Marathi|mr|
-|Spanish |es| |Nepali|ne|
-| Portuguese|pt| |Serbian(cyrillic)|rs_cyrillic|
-|Russia|ru||Bulgarian |bg|
-|Ukranian|uk| |Estonian |et|
-|Belarusian|be| |Irish |ga|
-|Telugu |te| |Croatian |hr|
-|Saudi Arabia|sa| |Hungarian |hu|
-|Tamil |ta| |Indonesian|id|
-|Afrikaans |af| |Icelandic|is|
-|Azerbaijani  |az||Kurdish|ku|
-|Bosnian|bs| |Lithuanian |lt|
-|Czech|cs| |Latvian |lv|
-|Welsh |cy| |Maori|mi|
-|Danish|da| |Malay|ms|
-|Maltese |mt| |Adyghe |ady|
-|Dutch |nl| |Kabardian |kbd|
-|Norwegian |no| |Avar |ava|
-|Polish |pl| |Dargwa |dar|
-|Romanian |ro| |Ingush |inh|
-|Slovak |sk| |Lak |lbe|
-|Slovenian |sl| |Lezghian |lez|
-|Albanian |sq| |Tabassaran |tab|
-|Swedish |sv| |Bihari |bh|
-|Swahili |sw| |Maithili |mai|
-|Tagalog |tl| |Angika |ang|
-|Turkish |tr| |Bhojpuri |bho|
-|Uzbek |uz| |Magahi |mah|
-|Vietnamese |vi| |Nagpur |sck|
-|Mongolian |mn| |Newari |new|
-|Abaza |abq| |Goan Konkani|gom|
+For now, we chose 9 commonly used languages added in the plugin, there are 80 languages can be added in to the plugin in total, please look into the page below and modify the code if needed.
 
+You can add specific cases in dockerfile, then the image would auto-updated the Languages package when docker build the image
+
+https://github.com/PaddlePaddle/PaddleOCR/edit/release/2.6/doc/doc_en/multi_languages_en.md
 
 
 Run
