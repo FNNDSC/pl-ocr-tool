@@ -86,8 +86,7 @@ For now, we chose 9 commonly used languages added in the plugin, there are 80 la
 
 You can add specific cases in dockerfile, then the image would auto-updated the Languages package when docker build the image
 
-https://github.com/PaddlePaddle/PaddleOCR/edit/release/2.6/doc/doc_en/multi_languages_en.md
-
+https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_en/multi_languages_en.md
 
 Run
 ~~~
@@ -145,7 +144,7 @@ Example:
 Examples
 --------
 
-Put some examples here!
+Please check folder test_img and test_expedted_output.
 
 
 .. image:: https://raw.githubusercontent.com/FNNDSC/cookiecutter-chrisapp/master/doc/assets/badge/light.png
